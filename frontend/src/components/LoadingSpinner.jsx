@@ -1,8 +1,8 @@
-function LoadingSpinner() {
+function LoadingSpinner({ size = 'h-5 w-5', className = '' }) {
   return (
-    <div
-      className="h-5 w-5 animate-spin rounded-full border-2 border-slatebrand-200 border-t-slatebrand-600"
-      aria-label="Scanning"
+    <span
+      className={`${size} inline-block animate-spin rounded-full border-2 border-cyan-200/25 border-t-cyan-400 ${className}`}
+      aria-label="Loading"
     />
   );
 }

@@ -1,0 +1,12 @@
+# Environment secrets
+.env
+**/.env
+backend/.env
+frontend/.env
+
+# Build outputs
+frontend/dist
+
+# Dependencies
+backend/node_modules
+frontend/node_modules
