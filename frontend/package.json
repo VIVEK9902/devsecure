@@ -3,11 +3,11 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-"scripts": {
-  "dev": "node node_modules/vite/bin/vite.js",
-  "build": "node node_modules/vite/bin/vite.js build",
-  "preview": "node node_modules/vite/bin/vite.js preview"
-},
+  "scripts": {
+    "dev": "node node_modules/vite/bin/vite.js",
+    "build": "node node_modules/vite/bin/vite.js build",
+    "preview": "node node_modules/vite/bin/vite.js preview"
+  },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.1",
     "@tsparticles/engine": "^3.9.1",
@@ -15,6 +15,7 @@
     "@tsparticles/slim": "^3.9.1",
     "axios": "^1.8.2",
     "framer-motion": "^11.13.1",
+    "jiti": "^2.6.1",
     "lucide-react": "^0.577.0",
     "react": "^18.3.1",
     "react-circular-progressbar": "^2.2.0",
