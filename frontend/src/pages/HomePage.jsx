@@ -14,6 +14,7 @@ import ScanProgress from '../components/ScanProgress';
 import AISummaryCard from '../components/AISummaryCard';
 import AIExplanationModal from '../components/AIExplanationModal';
 import SecurityChat from '../components/SecurityChat';
+import { API_BASE_URL } from '../config/api';
 
 const SCAN_STAGES = [
   'Scanning target',
@@ -272,12 +273,12 @@ function HomePage() {
 
     try {
       const [summaryResponse, recommendationResponse] = await Promise.all([
-        axios.post('/api/ai/summary', {
+        axios.post(`${API_BASE_URL}/api/ai/summary`, {
           url: scanPayload.url,
           issues: scanPayload.issues || [],
           score: scanPayload.securityScore || 0,
         }),
-        axios.post('/api/ai/recommend', {
+        axios.post(`${API_BASE_URL}/api/ai/recommend`, {
           issues: scanPayload.issues || [],
         }),
       ]);
@@ -328,7 +329,7 @@ function HomePage() {
         setScanStage((current) => (current < 2 ? current + 1 : current));
       }, 850);
 
-      const response = await axios.post('/api/scan', { url: url.trim() });
+      const response = await axios.post(`${API_BASE_URL}/api/scan`, { url: url.trim() });
       const scanResult = normalizeScanResult(response.data);
       setResult(scanResult);
       scanSucceeded = true;
@@ -408,7 +409,7 @@ function HomePage() {
     });
 
     try {
-      const response = await axios.post('/api/ai/explain', { vulnerability: issueTitle });
+      const response = await axios.post(`${API_BASE_URL}/api/ai/explain`, { vulnerability: issueTitle });
       setExplanationModal({
         isOpen: true,
         issue: issueTitle,

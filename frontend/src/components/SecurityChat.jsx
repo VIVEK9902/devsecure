@@ -3,6 +3,7 @@ import axios from 'axios';
 import { AnimatePresence, motion } from 'framer-motion';
 import ResultCard from './ResultCard';
 import LoadingSpinner from './LoadingSpinner';
+import { API_BASE_URL } from '../config/api';
 
 const normalizeBulletPoints = (value) => {
   if (Array.isArray(value)) {
@@ -45,7 +46,7 @@ function SecurityChat({ isDark = true }) {
     setError('');
 
     try {
-      const response = await axios.post('/api/ai/chat', { message });
+      const response = await axios.post(`${API_BASE_URL}/api/ai/chat`,{ message });
       const points = normalizeBulletPoints(response.data?.response).slice(0, 8);
       setMessages((current) => [...current, { role: 'assistant', content: points }]);
     } catch (chatError) {
