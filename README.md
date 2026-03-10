@@ -1,86 +1,160 @@
-# DevSecure - Web Vulnerability Scanner (Phase-3)
+# DevSecure – AI Powered Web Security Scanner
 
-DevSecure is a full-stack cybersecurity dashboard with scanner + AI-assisted analysis.
+DevSecure is a full-stack cybersecurity tool that scans websites for common security issues and uses AI to analyze vulnerabilities, explain risks, and recommend fixes.
+
+The system helps developers understand security weaknesses in their web applications by generating automated reports and AI-powered insights.
+
+---
+
+## Features
+
+• Automated website security scanning
+• AI powered vulnerability explanations
+• AI generated security recommendations
+• Security risk scoring system
+• Interactive cybersecurity AI assistant
+• Downloadable PDF security report
+• Modern dashboard with data visualizations
+
+---
 
 ## Tech Stack
 
-- Backend: Node.js, Express, Axios, Helmet, CORS, portscanner, pdfkit, dotenv
-- Frontend: React (Vite), Tailwind CSS (Vite plugin), Axios, Recharts, react-circular-progressbar, Framer Motion
+### Frontend
 
-## Environment Setup (Required for AI)
+* React (Vite)
+* Tailwind CSS
+* Framer Motion
+* Axios
+* Recharts
+* tsparticles
+* lucide-react
 
-Create `backend/.env`:
+### Backend
 
-```env
-OPENAI_API_KEY=your_openai_api_key_here
-```
+* Node.js
+* Express.js
+* Axios
+* PDF Report Generation
 
-Optional:
+### AI Integration
 
-```env
-OPENAI_MODEL=gpt-4.1-mini
-```
+* Groq API
+* Llama 3.1 AI Model
 
-`backend/.env` is ignored in `.gitignore`.
+### Deployment
 
-## Backend API
+* Frontend deployed on Vercel
+* Backend deployed on Render
 
-### Scan APIs
+---
 
-- `POST /api/scan`
-- `GET /api/report`
+## System Architecture
 
-### AI APIs
+User
+↓
+Frontend (React + Vite)
+↓
+Backend API (Node.js + Express)
+↓
+Groq LLM (AI Analysis)
+↓
+Security Insights + Report
 
-- `POST /api/ai/explain`
-  - Body:
-    ```json
-    { "vulnerability": "Missing Content Security Policy" }
-    ```
-- `POST /api/ai/summary`
-  - Body:
-    ```json
-    { "url": "https://example.com", "issues": [], "score": 72 }
-    ```
-- `POST /api/ai/recommend`
-  - Body:
-    ```json
-    { "issues": [] }
-    ```
-- `POST /api/ai/chat`
-  - Body:
-    ```json
-    { "message": "How dangerous is missing CSP?" }
-    ```
+---
 
-## Dashboard Features
+## AI Capabilities
 
-- Security score gauge
-- Severity pie chart
-- Security headers status panel
-- Vulnerability list with AI explain modal
-- AI security summary card
-- AI security recommendations
-- Security assistant chat panel
-- Animated cyber background
-- Clickable recent scans that reload full stored scan objects
+### AI Security Summary
 
-## Run Backend
+Generates a quick summary of scan results including:
 
-```bash
-cd backend
-npm install
-node server.js
-```
+• risk level
+• detected vulnerabilities
+• overall security score
+• immediate remediation actions
 
-Backend runs on `http://localhost:5000`.
+### AI Vulnerability Explanation
 
-## Run Frontend
+Explains each detected vulnerability:
 
-```bash
+• what the vulnerability means
+• how attackers exploit it
+• impact on the system
+• recommended fix
+
+### AI Recommendations
+
+Provides structured security remediation steps.
+
+### AI Security Chat
+
+Interactive assistant that answers cybersecurity questions and explains security concepts.
+
+---
+
+## Example Use Case
+
+1. Enter a website URL
+2. DevSecure scans the website
+3. Vulnerabilities and security issues are detected
+4. AI analyzes results and explains risks
+5. A security report is generated for developers
+
+---
+
+## Installation (Local Setup)
+
+Clone repository
+
+git clone https://github.com/yourusername/devsecure.git
+
+Install dependencies
+
+Frontend
+
 cd frontend
 npm install
-npm run dev
-```
 
-Frontend runs on `http://localhost:5173` and proxies `/api` to backend.
+Backend
+
+cd backend
+npm install
+
+Run backend
+
+node server.js
+
+Run frontend
+
+npm run dev
+
+---
+
+## Environment Variables
+
+Backend
+
+GROQ_API_KEY=your_groq_api_key
+GROQ_MODEL=llama-3.1-8b-instant
+
+Frontend
+
+VITE_API_BASE_URL=http://localhost:5000
+
+---
+
+## Future Improvements
+
+• OWASP Top-10 vulnerability classification
+• Historical scan tracking
+• Security trend dashboard
+• Real-time scan progress indicator
+
+---
+
+## Author
+
+Vivek Kumar
+Computer Science Student
+Cybersecurity Enthusiast
