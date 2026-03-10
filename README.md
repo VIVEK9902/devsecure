@@ -1,26 +1,27 @@
 # DevSecure – AI Powered Web Security Scanner
 
-DevSecure is a full-stack cybersecurity tool that scans websites for common security issues and uses AI to analyze vulnerabilities, explain risks, and recommend fixes.
+DevSecure is a full-stack cybersecurity tool that scans websites for common security issues and uses Artificial Intelligence to analyze vulnerabilities, explain risks, and recommend fixes.
 
 The system helps developers understand security weaknesses in their web applications by generating automated reports and AI-powered insights.
 
 ---
 
-## Features
+# Features
 
 • Automated website security scanning
-• AI powered vulnerability explanations
+• AI powered vulnerability explanation
 • AI generated security recommendations
-• Security risk scoring system
 • Interactive cybersecurity AI assistant
+• Security risk scoring system
+• Visual dashboard with security metrics
 • Downloadable PDF security report
-• Modern dashboard with data visualizations
+• Modern responsive UI
 
 ---
 
-## Tech Stack
+# Tech Stack
 
-### Frontend
+## Frontend
 
 * React (Vite)
 * Tailwind CSS
@@ -30,26 +31,26 @@ The system helps developers understand security weaknesses in their web applicat
 * tsparticles
 * lucide-react
 
-### Backend
+## Backend
 
 * Node.js
 * Express.js
 * Axios
 * PDF Report Generation
 
-### AI Integration
+## AI Integration
 
 * Groq API
-* Llama 3.1 AI Model
+* Llama-3.1 AI Model
 
-### Deployment
+## Deployment
 
-* Frontend deployed on Vercel
-* Backend deployed on Render
+Frontend → Vercel
+Backend → Render
 
 ---
 
-## System Architecture
+# System Architecture
 
 User
 ↓
@@ -63,18 +64,20 @@ Security Insights + Report
 
 ---
 
-## AI Capabilities
+# AI Capabilities
 
-### AI Security Summary
+## AI Security Summary
 
-Generates a quick summary of scan results including:
+Generates a quick overview of scan results including:
 
+• overall security score
 • risk level
 • detected vulnerabilities
-• overall security score
-• immediate remediation actions
+• immediate remediation steps
 
-### AI Vulnerability Explanation
+---
+
+## AI Vulnerability Explanation
 
 Explains each detected vulnerability:
 
@@ -83,68 +86,203 @@ Explains each detected vulnerability:
 • impact on the system
 • recommended fix
 
-### AI Recommendations
+---
 
-Provides structured security remediation steps.
+## AI Recommendations
 
-### AI Security Chat
-
-Interactive assistant that answers cybersecurity questions and explains security concepts.
+Generates structured security remediation suggestions for developers.
 
 ---
 
-## Example Use Case
+## AI Security Chat
 
-1. Enter a website URL
-2. DevSecure scans the website
-3. Vulnerabilities and security issues are detected
-4. AI analyzes results and explains risks
-5. A security report is generated for developers
+Interactive assistant capable of answering cybersecurity questions and explaining vulnerabilities.
 
 ---
 
-## Installation (Local Setup)
+# Project Structure
+
+```
+DevSecure
+│
+├── frontend
+│   ├── components
+│   ├── pages
+│   ├── services
+│   └── App.jsx
+│
+├── backend
+│   ├── routes
+│   │   ├── scanRoutes.js
+│   │   └── aiRoutes.js
+│   │
+│   ├── services
+│   │   └── aiService.js
+│   │
+│   └── server.js
+│
+└── README.md
+```
+
+---
+
+# API Endpoints
+
+## Health Check
+
+GET /api/health
+
+---
+
+## Website Scan
+
+POST /api/scan
+
+Runs a security scan on the provided website.
+
+---
+
+## AI Security Summary
+
+POST /api/ai/summary
+
+Returns AI generated summary of scan results.
+
+---
+
+## AI Vulnerability Explanation
+
+POST /api/ai/explain
+
+Provides explanation and mitigation for vulnerabilities.
+
+---
+
+## AI Security Recommendations
+
+POST /api/ai/recommendations
+
+Returns security improvement suggestions.
+
+---
+
+## AI Security Chat
+
+POST /api/ai/chat
+
+Cybersecurity assistant endpoint.
+
+---
+
+# Local Setup
 
 Clone repository
 
+```
 git clone https://github.com/yourusername/devsecure.git
+```
 
-Install dependencies
+---
 
-Frontend
+## Backend Setup
 
-cd frontend
-npm install
-
-Backend
-
+```
 cd backend
 npm install
-
-Run backend
-
 node server.js
+```
 
-Run frontend
+Backend runs on
 
-npm run dev
+```
+http://localhost:5000
+```
 
 ---
 
-## Environment Variables
+## Frontend Setup
 
-Backend
+```
+cd frontend
+npm install
+npm run dev
+```
 
+Frontend runs on
+
+```
+http://localhost:5173
+```
+
+---
+
+# Environment Variables
+
+## Backend
+
+Create a `.env` file in backend folder.
+
+```
 GROQ_API_KEY=your_groq_api_key
 GROQ_MODEL=llama-3.1-8b-instant
-
-Frontend
-
-VITE_API_BASE_URL=http://localhost:5000
+PORT=5000
+```
 
 ---
 
-## Future Improvements
+## Frontend
+
+Create `.env` in frontend folder.
+
+```
+VITE_API_BASE_URL=http://localhost:5000
+```
+
+For production deployment:
+
+```
+VITE_API_BASE_URL=https://your-backend-url.onrender.com
+```
+
+---
+
+# Deployment
+
+## Frontend
+
+Frontend is deployed using **Vercel**.
+
+Features include:
+
+• automatic GitHub deployment
+• environment variable configuration
+• global CDN hosting
+
+---
+
+## Backend
+
+Backend is deployed using **Render**.
+
+Deployment includes:
+
+• environment variable configuration
+• automated builds from GitHub
+• API health monitoring
+
+---
+
+# Example Workflow
+
+1. User enters a website URL
+2. DevSecure scans the website
+3. Security vulnerabilities are detected
+4. AI analyzes the results
+5. Security report is generated
+
+---
+
+# Future Improvements
 
 • OWASP Top-10 vulnerability classification
 • Historical scan tracking
@@ -153,7 +291,7 @@ VITE_API_BASE_URL=http://localhost:5000
 
 ---
 
-## Author
+# Author
 
 Vivek Kumar
 Computer Science Student
