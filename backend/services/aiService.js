@@ -1,7 +1,9 @@
-﻿const axios = require('axios');
+﻿const Groq = require("groq-sdk");
 
-const OLLAMA_API = 'http://localhost:11434/api/generate';
-const OLLAMA_MODEL = process.env.OLLAMA_MODEL || 'mistral';
+const groq = new Groq({
+  apiKey: process.env.GROQ_API_KEY,
+});
+
 const BULLET_PREFIX_REGEX = /^[-*\s]+/;
 
 const stripMarkdownCodeFences = (text) => {
@@ -70,23 +72,21 @@ const normalizeBulletPoints = (value) => {
 
 async function queryAI(prompt) {
   try {
-    const response = await axios.post(
-      OLLAMA_API,
-      {
-        model: OLLAMA_MODEL,
-        prompt,
-        stream: false,
-      },
-      {
-        timeout: 60000,
-      }
-    );
+    const completion = await groq.chat.completions.create({
+      model: "llama-3.1-8b-instant",
+      messages: [
+        {
+          role: "user",
+          content: prompt
+        }
+      ],
+      temperature: 0.4,
+    });
 
-    return response.data.response || '';
+    return completion.choices[0].message.content || '';
   } catch (error) {
     const err = new Error(
-      error.response?.data?.error ||
-        'Ollama request failed. Ensure Ollama is running locally with the configured model.'
+      error.message || 'Groq AI request failed.'
     );
     err.code = 'AI_REQUEST_FAILED';
     throw err;
@@ -128,6 +128,7 @@ ${formattedIssues}
 `;
 
   const responseText = await queryAI(prompt);
+
   const bulletPoints = normalizeBulletPoints(responseText)
     .filter((line) => !/^security summary$/i.test(line))
     .slice(0, 8);
@@ -202,6 +203,7 @@ ${formattedIssues}
 `;
 
   const responseText = await queryAI(prompt);
+
   const recommendations = normalizeBulletPoints(responseText).slice(0, 10);
 
   return recommendations.length
@@ -225,6 +227,7 @@ ${message}
 `;
 
   const responseText = await queryAI(prompt);
+
   const bulletPoints = normalizeBulletPoints(responseText).slice(0, 8);
 
   return bulletPoints.length
@@ -238,6 +241,3 @@ module.exports = {
   generateAIRecommendations,
   securityChatReply,
 };
-
-
-

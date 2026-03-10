@@ -82,4 +82,5 @@ Start Server
 */
 app.listen(PORT, () => {
   console.log(`DevSecure backend running on port ${PORT}`);
+  console.log("Groq API Key Loaded:", process.env.GROQ_API_KEY ? "YES" : "NO");
 });
