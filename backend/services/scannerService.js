@@ -3,6 +3,9 @@ const portscanner = require('portscanner');
 const { normalizeUrl, getHostname } = require('../utils/urlUtils');
 const { calculateRisk } = require('../utils/riskUtils');
 const { setLatestScan } = require('./scanStore');
+const { crawlSite } = require("./crawlerService");
+const { fetchCVE } = require("./cveService");
+const { simulateXSS, simulateClickjacking } = require("./attackSimulationService");
 
 const REQUIRED_HEADERS = [
   { key: 'content-security-policy', name: 'Content-Security-Policy' },
@@ -38,7 +41,6 @@ const checkPortStatus = (port, hostname) =>
       if (error) {
         return resolve('closed');
       }
-
       return resolve(status);
     });
   });
@@ -111,7 +113,6 @@ const getHeaderIssues = (securityHeaders) => {
 const getXssIssues = (html) => {
   const issues = [];
 
-  // Detect inline script blocks without src attributes.
   const inlineScriptRegex = /<script\b(?![^>]*\bsrc=)[^>]*>[\s\S]*?<\/script>/i;
   if (inlineScriptRegex.test(html)) {
     issues.push(
@@ -127,7 +128,6 @@ const getXssIssues = (html) => {
     );
   }
 
-  // Detect frequently abused patterns that can lead to unsafe execution.
   const unsafeScriptRegex = /\beval\s*\(|document\.write\s*\(|\.innerHTML\s*=|on\w+\s*=/i;
   if (unsafeScriptRegex.test(html)) {
     issues.push(
@@ -252,29 +252,57 @@ const scanTarget = async (rawUrl) => {
   const targetUrl = normalizeUrl(rawUrl);
   const hostname = getHostname(targetUrl);
 
-  let response;
+  // Crawl additional pages
+  let crawledPages = [];
   try {
-    response = await axios.get(targetUrl, {
-      timeout: 15000,
-      maxRedirects: 5,
-      validateStatus: () => true,
-    });
-  } catch (error) {
-    const unreachableError = new Error('Unable to reach the target URL. Check the URL and try again.');
-    unreachableError.code = 'TARGET_UNREACHABLE';
-    throw unreachableError;
+    crawledPages = await crawlSite(targetUrl);
+  } catch (err) {
+    console.log("Crawler failed:", err.message);
   }
 
-  const headers = response.headers || {};
-  const html = typeof response.data === 'string' ? response.data : '';
+  const scanTargets = [targetUrl, ...crawledPages];
+
+  let headers = {};
+  let html = "";
+
+  for (const url of scanTargets) {
+    try {
+      const response = await axios.get(url, {
+        timeout: 15000,
+        maxRedirects: 5,
+        validateStatus: () => true,
+      });
+
+      headers = response.headers || {};
+      html += typeof response.data === 'string' ? response.data : '';
+    } catch (error) {
+      console.log("Failed scanning page:", url);
+    }
+  }
 
   const securityHeaders = getSecurityHeadersStatus(headers);
   const headerIssues = getHeaderIssues(securityHeaders);
+  
   const xssIssues = getXssIssues(html);
+  const simulatedXssIssues = simulateXSS(html);
+  const clickjackingIssues = simulateClickjacking(headers);
+  
   const openPorts = await scanPorts(hostname);
   const portIssues = getPortIssues(openPorts);
 
-  const issues = sortIssuesBySeverity([...headerIssues, ...xssIssues, ...portIssues]);
+  let issues = sortIssuesBySeverity([...headerIssues, ...xssIssues, ...simulatedXssIssues, ...clickjackingIssues, ...portIssues]);
+
+  // Attach CVE intelligence
+  for (const issue of issues) {
+    const keyword = issue.category || issue.title;
+    const cve = await fetchCVE(keyword);
+
+    if (cve) {
+      issue.cve = cve.id;
+      issue.cvss = cve.cvss;
+      issue.description = cve.summary;
+    }
+  }
 
   const { securityScore, riskLevel } = calculateRisk({
     missingHeaders: headerIssues.length,
