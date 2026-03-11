@@ -443,7 +443,7 @@ function HomePage() {
 
   const handleDownloadReport = async () => {
     try {
-      const response = await axios.get('/api/report', { responseType: 'blob' });
+      const response = await axios.get(`${API_BASE_URL}/api/report`, { responseType: 'blob' });
       const blobUrl = URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
       const anchor = document.createElement('a');
       anchor.href = blobUrl;
