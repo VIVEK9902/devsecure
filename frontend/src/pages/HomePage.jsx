@@ -442,21 +442,25 @@ function HomePage() {
   };
 
   const handleDownloadReport = async () => {
-    try {
-      const response = await axios.post(`${API_BASE_URL}/api/report`, scanResult, { responseType: 'blob' });
-      const blobUrl = URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
-      const anchor = document.createElement('a');
-      anchor.href = blobUrl;
-      anchor.download = `devsecure-report-${new Date().toISOString().slice(0, 10)}.pdf`;
-      document.body.appendChild(anchor);
-      anchor.click();
-      anchor.remove();
-      URL.revokeObjectURL(blobUrl);
-    } catch (downloadError) {
-      const message = downloadError.response?.data?.message || 'Unable to download PDF report.';
-      setError(message);
-    }
-  };
+  try {
+    const response = await axios.post(`${API_BASE_URL}/api/report`, result, { responseType: 'blob' });
+
+    const blobUrl = URL.createObjectURL(new Blob([response.data], { type: 'application/pdf' }));
+
+    const anchor = document.createElement('a');
+    anchor.href = blobUrl;
+    anchor.download = `devsecure-report-${new Date().toISOString().slice(0, 10)}.pdf`;
+
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+
+    URL.revokeObjectURL(blobUrl);
+  } catch (downloadError) {
+    const message = downloadError.response?.data?.message || 'Unable to download PDF report.';
+    setError(message);
+  }
+};
 
   const handleSelectHistoryScan = (scanObject) => {
     loadScanResult(scanObject);
