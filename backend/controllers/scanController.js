@@ -27,15 +27,15 @@ exports.scanWebsite = async (req, res, next) => {
 
 exports.downloadReport = (req, res, next) => {
   try {
-    const latestScan = getLatestScan();
+    const scanData = req.body;
 
-    if (!latestScan) {
-      return res.status(404).json({
-        message: 'No scan report available yet. Run a scan first using POST /api/scan.',
+    if (!scanData) {
+      return res.status(400).json({
+        message: 'Scan data is required to generate the report.',
       });
     }
 
-    return streamPdfReport(latestScan, res);
+    return streamPdfReport(scanData, res);
   } catch (error) {
     return next(error);
   }

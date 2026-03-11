@@ -4,6 +4,6 @@ const { scanWebsite, downloadReport } = require('../controllers/scanController')
 const router = express.Router();
 
 router.post('/scan', scanWebsite);
-router.get('/report', downloadReport);
+router.post('/report', downloadReport);
 
 module.exports = router;
